@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,7 +31,13 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException, IOException, ServletException {
 		String authorization = req.getHeader("Authorization");
-		if(authorization != null && authorization.startsWith("Basic")) {
+		System.out.println(authorization);
+		System.out.println(req.getMethod());
+		Enumeration<String> headerNames = req.getHeaderNames();
+		while(headerNames.hasMoreElements()) {
+			System.out.println(headerNames.nextElement());
+		}
+		if(authorization != null && (authorization.startsWith("Basic") || authorization.startsWith("basic"))) {
 			// Authorization: Basic base64credentials
 			String base64Credentials = authorization.substring("Basic".length()).trim();
 			String credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8"));
