@@ -25,8 +25,6 @@ public class TokenAuthService {
 	static final String HEADER_STRING = "Authorization";
 
 	public static void addAuthentication(HttpServletResponse res, Authentication auth) {
-		// TODO borrar esto
-		System.out.println(auth.getPrincipal());
 		String JWT = Jwts.builder().setSubject(auth.getName()).claim("authorities", auth.getAuthorities())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
@@ -51,8 +49,6 @@ public class TokenAuthService {
 
 			Authentication auth = userName != null
 					? new UsernamePasswordAuthenticationToken(userName, null, authorities) : null;
-			// TODO borrar esto
-			System.out.println(auth);
 			return auth;
 		}
 		return null;
